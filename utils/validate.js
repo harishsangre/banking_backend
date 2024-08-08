@@ -15,7 +15,7 @@ const validateCreateAccount = [
 ];
 
 const validateTransaction = [
-    body('amount').isNumeric().isFloat({ gt: 0 }).withMessage('Amount must be a positive number'),
+    body('amount').isNumeric().isFloat({ gt: 0 }).withMessage('Amount must greater than Zero'),
     body('accountNumber').isString().withMessage('Account number must be a string').isLength({ min: 10, max: 20 }).withMessage('Account number must be between 10 and 20 characters').matches(/^ACCT-[a-zA-Z0-9]{8,10}-[a-zA-Z0-9]{6,8}$/).withMessage('Account number format is invalid'),
     (req, res, next) => {
         const errors = validationResult(req);

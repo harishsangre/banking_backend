@@ -38,7 +38,7 @@ exports.deposit = [authenticateToken, validateTransaction, async (req, res) => {
         });
         await transaction.save();
 
-        res.json(account);
+        res.json({message:`Amount ${amount} deposited successfull, available balance ${account.balance}`});
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -61,7 +61,7 @@ exports.withdraw = [authenticateToken, validateTransaction, async (req, res) => 
         });
         await transaction.save();
 
-        res.json(account);
+        res.json({message:`Amount ${amount} withdraw successfull, available balance ${account.balance}`});
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -98,7 +98,7 @@ exports.transfer = [authenticateToken, validateTransfer, async (req, res) => {
         });
         await transaction.save();
 
-        res.json({ fromAccount, toAccount, message: 'Amount transferred successfully' });
+        res.json({ message: 'Amount transferred successfully' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -151,5 +151,5 @@ exports.login=async (req, res) => {
         return res.status(400).json({ error: 'Invalid email or password' });
     }
     const token = jwt.sign({ _id: user._id,accountNumber: user.accountNumber }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ message: 'Logged in successfully', token,userinfor:user });
+    res.status(200).json({ message: 'Logged in successfully', token });
 };
