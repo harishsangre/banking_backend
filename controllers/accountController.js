@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Account = require('../models/accountModel');
 const Transaction = require('../models/transactionModel');
 const { validateTransaction, validateTransfer } = require('../utils/validate');
@@ -23,46 +24,59 @@ exports.createAccount =  async (req, res) => {
 
 exports.deposit = [authenticateToken, validateTransaction, async (req, res) => {
     const { amount,accountNumber } = req.body;
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
         const account = await Account.findOne({accountNumber });
         if (!account) return res.status(404).json({ error: 'Account not found' });
         const accountbalance = Number(account.balance)
         const depositamount = Number(amount)
         account.balance = accountbalance + depositamount
-        await account.save();
+        await account.save({session});
 
         const transaction = new Transaction({
             type: 'deposit',
             amount,
             fromAccount: account._id
         });
-        await transaction.save();
+        await transaction.save({session});
+        await session.commitTransaction();
+        session.endSession();
 
         res.json({message:`Amount ${amount} deposited successfull, available balance ${account.balance}`});
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
         res.status(500).json({ error: err.message });
     }
 }];
 
 exports.withdraw = [authenticateToken, validateTransaction, async (req, res) => {
     const { amount,accountNumber } = req.body;
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
         const account = await Account.findOne({accountNumber});
         if (!account) return res.status(404).json({ error: 'Account not found' });
         if (account.balance < amount) return res.status(400).json({ error: 'Insufficient funds' });
 
         account.balance -= amount;
-        await account.save();
+        await account.save({session});
 
         const transaction = new Transaction({
             type: 'withdrawal',
             amount,
             fromAccount: account._id
         });
-        await transaction.save();
+        await transaction.save({session});
+
+        await session.commitTransaction();
+        session.endSession();
 
         res.json({message:`Amount ${amount} withdraw successfull, available balance ${account.balance}`});
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
         res.status(500).json({ error: err.message });
     }
 }];
@@ -70,6 +84,9 @@ exports.withdraw = [authenticateToken, validateTransaction, async (req, res) => 
 exports.transfer = [authenticateToken, validateTransfer, async (req, res) => {
     const { amount, toAccountNumber } = req.body;
     const fromAccountNumber = req.user.accountNumber;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
     try {
         const fromAccount = await Account.findOne({ accountNumber: fromAccountNumber });
@@ -86,8 +103,8 @@ exports.transfer = [authenticateToken, validateTransfer, async (req, res) => {
         fromAccount.balance = fromAccountBalance - amountToTransfer;
         toAccount.balance = toAccountBalance + amountToTransfer;
 
-        await fromAccount.save();
-        await toAccount.save();
+        await fromAccount.save({session});
+        await toAccount.save({session});
 
         // Record the transaction
         const transaction = new Transaction({
@@ -96,10 +113,15 @@ exports.transfer = [authenticateToken, validateTransfer, async (req, res) => {
             fromAccount: fromAccount._id,
             toAccount: toAccount._id
         });
-        await transaction.save();
+        await transaction.save({session});
+
+        await session.commitTransaction();
+        session.endSession();
 
         res.json({ message: 'Amount transferred successfully' });
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
         res.status(500).json({ error: err.message });
     }
 }];
