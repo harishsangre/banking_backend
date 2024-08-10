@@ -1,0 +1,131 @@
+<div id="header"></div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking App</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <div id="hidelogout">
+
+        <button id="logout-button">Logout</button>
+    </div>
+    <style>
+        /* body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input,
+        button {
+            margin-top: 5px;
+        } */
+
+        .message {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <div class="card" id="create-card">
+            <h2>Create Account</h2>
+            <form id="create-account-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="create-name">Name:</label>
+                        <input type="text" id="create-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="create-email">Email:</label>
+                        <input type="email" id="create-email" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="create-password">Password:</label>
+                        <input type="password" id="create-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="create-balance">Initial Balance:</label>
+                        <input type="number" id="create-balance" required>
+                    </div>
+                </div>
+                <button type="submit">Create Account</button>
+                <p class="message" id="create-account-message"></p>
+            </form>
+        </div>
+        <div class="card" id="login-card">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" required>
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" required>
+                <button type="submit">Login</button>
+                <p class="message" id="login-message"></p>
+            </form>
+        </div>
+    </div>
+    <div class="row" id="on-login">
+
+        <div class="card" id="deposit-card">
+            <h2>Deposit</h2>
+            <form id="deposit-form">
+                <label for="deposit-amount">Amount:</label>
+                <input type="number" id="deposit-amount" required>
+                <button type="submit">Deposit</button>
+                <p class="message" id="deposit-message"></p>
+            </form>
+        </div>
+        <div class="card" id="withdraw-card">
+            <h2>Withdraw</h2>
+            <form id="withdraw-form">
+                <label for="withdraw-amount">Amount:</label>
+                <input type="number" id="withdraw-amount" required>
+                <button type="submit">Withdraw</button>
+                <p class="message" id="withdraw-message"></p>
+            </form>
+        </div>
+    </div>
+    <div class="transer-div">
+
+        <div class="card" id="transfer-card">
+            <h2>Transfer</h2>
+            <form id="transfer-form">
+                <label for="transfer-to">To Account Number:</label>
+                <input type="text" id="transfer-to" required>
+                <label for="transfer-amount">Amount:</label>
+                <input type="number" id="transfer-amount" required>
+                <button type="submit">Transfer</button>
+                <p class="message" id="transfer-message"></p>
+            </form>
+        </div>
+    </div>
+    <div id="footer"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

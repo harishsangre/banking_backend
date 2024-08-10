@@ -42,7 +42,6 @@ Deposit amount to an account
 Route - http://localhost:3000/api/accounts/deposit
 For testing the api on post-man use the below parameters
 amount:1000
-accountNumber:ACCT-lzlhwpjc-C17BDA (This is the account number you get while creating the account)
 
 In response you get a message ( "message": "Amount 1000 deposited successfull, available balance 39000.1")
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -50,7 +49,6 @@ Withdraw amount from an account
 Route - http://localhost:3000/api/accounts/withdraw
 For testing the api on post-man use the below parameters
 amount:1000
-accountNumber:ACCT-lzlhwpjc-C17BDA
 
 In response you get a message ("message": "Amount 1000 withdraw successfull, available balance 38000.1")
 --------------------------------------------------------------------------------------------------------------------------------------
