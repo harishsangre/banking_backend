@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         document.getElementById('navv').addEventListener('click', handleLinkClick);
 
-    }, 100);
+    }, 500);
 
     // Handle account creation
     if (createAccountForm) {
